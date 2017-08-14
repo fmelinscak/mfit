@@ -47,10 +47,10 @@ function results = mfit_optimize(likfun,param,data,nstarts)
         for i = 1:nstarts
             x0 = zeros(1,K);
             for k = 1:K
-                if isfield(param(k), 'init')
-                    x0(k) = param(k).init;
+                if isempty(param(k).init) || isnan(param(k).init)
+                    x0(k) = unifrnd(param(k).lb,param(k).ub);                    
                 else
-                    x0(k) = unifrnd(param(k).lb,param(k).ub);
+                    x0(k) = param(k).init;
                 end
             end
             [x,nlogp] = fmincon(f,x0,[],[],[],[],lb,ub,[],options);
